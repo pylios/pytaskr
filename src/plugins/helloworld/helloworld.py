@@ -5,7 +5,7 @@ from plugins.pytaskrplugin import PytaskrPlugin
 import time, datetime
 
 # You MUST inherit PytaskrPlugin
-# You MUST choose a unique plugin name
+# You MUST choose a unique plugin name and it must match the filename
 class HelloWorld(PytaskrPlugin):
     meta = {}
     # You MUT implement a `perform` method
