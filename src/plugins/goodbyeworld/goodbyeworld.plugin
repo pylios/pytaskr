@@ -1,0 +1,9 @@
+[Core]
+Name = Goodbye World
+Module = goodbyeworld
+# Cron notation for scheduling
+interval = 5 15 * * *
+
+[Documentation]
+Author = Matt Walters
+Version = 0.1.1

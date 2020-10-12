@@ -1,0 +1,8 @@
+[Core]
+Name = Hello World
+Module = helloworld
+interval = * * * * *
+
+[Documentation]
+Author = Matt Walters
+Version = 0.1

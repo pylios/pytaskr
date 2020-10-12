@@ -1,0 +1,91 @@
+#!/usr/bin/env python3
+
+import sys, os, time, datetime, argparse, pprint, asyncio, threading, glob
+from crontab import CronTab
+from yapsy.PluginManager import PluginManager
+from contextlib import suppress
+
+CRON_CHECK_INTERVAL = 10
+_loop = {}
+
+pprint = pprint.PrettyPrinter(indent=4).pprint
+
+parser = argparse.ArgumentParser(description="Fun with tasks in python")
+parser.add_argument("--interval", type=str, help="the interval to execute")
+args = parser.parse_args()
+
+
+def main():
+    print()
+    log("Loading plugins ...")
+    # Load the plugins from the plugins directory
+    manager = PluginManager()
+    manager.setPluginInfoExtension("plugin")
+    plugin_directories = get_plugin_directories(
+        os.path.dirname(os.path.realpath(__file__)) + "/plugins"
+    )
+    manager.setPluginPlaces(plugin_directories)
+    manager.collectPlugins()
+
+    plugins = manager.getAllPlugins()
+    log("Plugins loaded:")
+    for plugin in plugins:
+        log("- " + plugin.name)
+
+    print()
+
+    log("Starting event loop")
+    while True:
+        try:
+            for plugin in manager.getAllPlugins():
+                task_time = CronTab(plugin.plugin_object.meta["interval"])
+                task_until = round(task_time.next(None, default_utc=True))
+
+                if task_until <= CRON_CHECK_INTERVAL:
+                    log(
+                        "Plugin: {plugin_name} - Executing".format(
+                            plugin_name=plugin.name
+                        )
+                    )
+                    fire_and_forget(plugin.name, plugin.plugin_object.perform())
+                else:
+                    log(
+                        "Plugin: {plugin_name} - Sleeping - Next event {next_event}s - Schedule: {interval}".format(
+                            plugin_name=plugin.name,
+                            next_event=task_until,
+                            interval=plugin.plugin_object.meta["interval"],
+                        )
+                    )
+
+            sys.stdout.flush()
+            time.sleep(CRON_CHECK_INTERVAL)
+
+        except (KeyboardInterrupt, SystemExit):
+            log("Exiting...")
+            exit()
+
+
+def fire_and_forget(plugin_name, coro):
+    global _loop
+    if plugin_name not in _loop.keys():
+        _loop[plugin_name] = asyncio.new_event_loop()
+        threading.Thread(target=_loop[plugin_name].run_forever, daemon=True).start()
+    _loop[plugin_name].call_soon_threadsafe(asyncio.create_task, coro)
+
+
+def get_plugin_directories(base_dir):
+    plugin_directories = []
+    directories = glob.glob(base_dir + "/*/")
+    for directory in directories:
+        if "__pycache__" not in directory:
+            plugin_directories.append(directory)
+    return plugin_directories
+
+
+def log(message):
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print("[{timestamp}] {message}".format(timestamp=timestamp, message=message))
+
+
+if __name__ == "__main__":
+    main()
