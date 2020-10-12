@@ -1,7 +1,7 @@
-# Leave this line
+# You MUST import PytaskrPlugin
 from plugins.pytaskrplugin import PytaskrPlugin
 
-# Import modules your plugin requires
+# You SHOULD import modules your plugin requires
 import time, datetime
 
 # You MUST inherit PytaskrPlugin
