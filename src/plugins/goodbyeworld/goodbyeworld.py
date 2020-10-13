@@ -1,4 +1,4 @@
-from plugins.pytaskrplugin import PytaskrPlugin
+from support.pytaskrplugin import PytaskrPlugin
 
 import time, datetime
 

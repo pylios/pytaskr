@@ -1,4 +1,4 @@
-VERSION=0.1.2
+VERSION=0.2.0
 
 fmt:
 	@find . -type f -name \*.py -print0 | xargs -0 black && \

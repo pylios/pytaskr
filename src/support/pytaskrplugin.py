@@ -1,5 +1,5 @@
 from yapsy.IPlugin import IPlugin
-import time, datetime, os
+import time, datetime, os, ntpath
 
 
 class PytaskrPlugin(IPlugin):
@@ -17,7 +17,8 @@ class PytaskrPlugin(IPlugin):
         return self.meta
 
     def parse_plugin_info(self):
-        dir = os.path.dirname(os.path.realpath(__file__))
+        dir = os.path.dirname(os.path.realpath(__file__)) + "/../plugins"
+        print("++ " + dir)
         plugin_info_file = (
             dir
             + "/"
