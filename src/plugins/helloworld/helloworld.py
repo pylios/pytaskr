@@ -1,5 +1,5 @@
 # You MUST import PytaskrPlugin
-from plugins.pytaskrplugin import PytaskrPlugin
+from support.pytaskrplugin import PytaskrPlugin
 
 # You SHOULD import modules your plugin requires
 import time, datetime
