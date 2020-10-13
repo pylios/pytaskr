@@ -1,7 +1,7 @@
 [Core]
 Name = Hello World
 Module = helloworld
-interval = * * * * *
+crontab = * * * * *
 
 [Documentation]
 Author = Matt Walters

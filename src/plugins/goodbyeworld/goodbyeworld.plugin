@@ -2,7 +2,7 @@
 Name = Goodbye World
 Module = goodbyeworld
 # Cron notation for scheduling
-interval = 5 15 * * *
+crontab = 48 16 * * *
 
 [Documentation]
 Author = Matt Walters
