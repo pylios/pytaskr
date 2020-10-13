@@ -1,37 +1,22 @@
-## Welcome to GitHub Pages
+## PyTaskr
 
-You can use the [editor on GitHub](https://github.com/pylios/pytaskr/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+PyTaskr is a lightweight task scheduler implemented in Python.  Scheduling tasks with it requires writing plugins for the system.  Plugins contain the schedule and operations for tasks, see the [helloworld](src/plugins/helloworld) plugin for a simple example.  Plugins can specify their task schedule via crontab-like schedules (e.g. `5 15 * * *` would run at 3:05pm).
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Plugins
+* Plugins can do essentially anything you could do in Python.  Make a web request on a predefined schedule, lookup resources in AWS to check for compliance and make changes if needed, etc..
+* Plugins are fairly easy to implement.  Advanced knowledge of Pythonor the overall plugin and scheduling system isn't required.  If you can write Python, you can write a plugin.
 
-### Markdown
+### Crontab Reference
+`* * * * *`
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+* 1st = minute
+* 2nd = hour
+* 3rd = day (month)
+* 4th = month
+* 5th = day (week)
 
-```markdown
-Syntax highlighted code block
+#### Crontab Examples
 
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/pylios/pytaskr/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+* `5 15 * * *` At 15:05 (3:05pm)
+* `5 15 5 * *` At 15:05 (3:05pm) on 5th day-of-month
+* `5 15 * * 3` At 15:05 (3:05pm) on Wednesday
