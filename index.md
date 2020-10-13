@@ -30,6 +30,3 @@ You might find [crontab guru](https://crontab.guru/) helpful in crafting crontab
 * `5 15 * * *` At 15:05 (3:05pm)
 * `5 15 5 * *` At 15:05 (3:05pm) on 5th day-of-month
 * `5 15 * * 3` At 15:05 (3:05pm) on Wednesday
-
-## Why on earth was this made
-It was somewhat a learning effort on my part with Python.  But it's also handy to have a simple task scheduler that is portable between environments.
