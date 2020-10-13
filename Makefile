@@ -1,4 +1,4 @@
-VERSION=0.1
+VERSION=0.1.2
 
 fmt:
 	@find . -type f -name \*.py -print0 | xargs -0 black && \
@@ -7,11 +7,15 @@ fmt:
 build:
 	@echo "Building image" && \
 	cd src && \
-	docker build --no-cache=true --rm -t mwalters/pytaskr:$(VERSION) .
+	docker build --no-cache=true --rm -t pylios/pytaskr:$(VERSION) -t pylios/pytaskr:latest .
 
 run:
-	docker run --rm -d --name pytaskr mwalters/pytaskr:$(VERSION) && \
+	docker run --rm -d --name pytaskr pylios/pytaskr:$(VERSION) && \
 	docker logs -f pytaskr
 
 stop:
 	docker stop pytaskr
+
+push:
+	docker push pylios/pytaskr:$(VERSION) && \
+	docker push pylios/pytaskr:latest
