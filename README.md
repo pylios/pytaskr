@@ -10,6 +10,7 @@ This is a lightweight task scheduler implemented in Python.  Scheduling tasks wi
     * e.g. if your plugin is helloworld/helloworld.py then you should also create helloworld/helloworld.plugin
     * An example of this file is located [here](src/plugins/helloworld/helloworld.plugin).
     * This file is where your Crontab schedule is held under the key `interval`
+* Crontab schedules are in UTC
 
 ## Crontab Reference
 `* * * * *`
