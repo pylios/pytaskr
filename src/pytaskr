@@ -10,8 +10,7 @@ _loop = {}
 
 pprint = pprint.PrettyPrinter(indent=4).pprint
 
-parser = argparse.ArgumentParser(description="Fun with tasks in python")
-parser.add_argument("--interval", type=str, help="the interval to execute")
+parser = argparse.ArgumentParser(description="Run with tasks in python")
 args = parser.parse_args()
 
 
@@ -38,7 +37,7 @@ def main():
     while True:
         try:
             for plugin in manager.getAllPlugins():
-                task_time = CronTab(plugin.plugin_object.meta["interval"])
+                task_time = CronTab(plugin.plugin_object.meta["crontab"])
                 task_until = round(task_time.next(None, default_utc=True))
 
                 if task_until <= CRON_CHECK_INTERVAL:
@@ -49,13 +48,14 @@ def main():
                     )
                     fire_and_forget(plugin.name, plugin.plugin_object.perform())
                 else:
-                    log(
-                        "Plugin: {plugin_name} - Sleeping - Next event {next_event}s - Schedule: {interval}".format(
-                            plugin_name=plugin.name,
-                            next_event=task_until,
-                            interval=plugin.plugin_object.meta["interval"],
+                    if task_until < (CRON_CHECK_INTERVAL * 6):
+                        log(
+                            "Plugin: {plugin_name} - Sleeping - Next event {next_event}s - Schedule: {crontab}".format(
+                                plugin_name=plugin.name,
+                                next_event=task_until,
+                                crontab=plugin.plugin_object.meta["crontab"],
+                            )
                         )
-                    )
 
             sys.stdout.flush()
             time.sleep(CRON_CHECK_INTERVAL)
