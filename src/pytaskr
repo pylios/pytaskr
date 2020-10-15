@@ -35,7 +35,7 @@ def main():
     log("Starting event loop")
     while True:
         try:
-            for plugin in manager.getAllPlugins():
+            for plugin in plugins:
                 task_time = CronTab(plugin.plugin_object.get_schedule())
                 task_until = round(task_time.next(None, default_utc=True))
 
