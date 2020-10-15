@@ -3,7 +3,6 @@
 import sys, os, time, datetime, argparse, pprint, asyncio, threading, glob
 from crontab import CronTab
 from yapsy.PluginManager import PluginManager
-from contextlib import suppress
 
 CRON_CHECK_INTERVAL = 10
 _loop = {}

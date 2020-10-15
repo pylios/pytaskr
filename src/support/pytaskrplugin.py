@@ -19,7 +19,6 @@ class PytaskrPlugin(IPlugin):
 
     def parse_plugin_info(self):
         dir = os.path.dirname(os.path.realpath(__file__)) + "/../plugins"
-        print("++ " + dir)
         plugin_info_file = (
             dir
             + "/"

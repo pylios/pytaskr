@@ -1,3 +1,2 @@
 crontab==0.22.9
-prettyprinter==0.18.0
 Yapsy==1.12.2
