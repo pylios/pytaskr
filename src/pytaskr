@@ -3,8 +3,11 @@
 import sys, os, time, datetime, argparse, pprint, asyncio, threading, glob
 from crontab import CronTab
 from yapsy.PluginManager import PluginManager
+from pylioshelpers.logging import logging
 
-CRON_CHECK_INTERVAL = 10
+log = logging.log
+
+CRON_CHECK_INTERVAL = 60
 _loop = {}
 
 pprint = pprint.PrettyPrinter(indent=4).pprint
@@ -15,7 +18,7 @@ args = parser.parse_args()
 
 def main():
     print()
-    log("Loading plugins ...")
+    log("Loading plugins ...", "info")
     # Load the plugins from the plugins directory
     manager = PluginManager()
     manager.setPluginInfoExtension("plugin")
@@ -26,9 +29,9 @@ def main():
     manager.collectPlugins()
 
     plugins = manager.getAllPlugins()
-    log("Plugins loaded:")
+    log("Plugins loaded:", "info")
     for plugin in plugins:
-        log("- " + plugin.name)
+        log("- " + plugin.name, "info")
 
     print()
 
@@ -39,7 +42,7 @@ def main():
                 task_time = CronTab(plugin.plugin_object.get_schedule())
                 task_until = round(task_time.next(None, default_utc=True))
 
-                if task_until <= CRON_CHECK_INTERVAL:
+                if task_until < CRON_CHECK_INTERVAL:
                     log(
                         "Plugin: {plugin_name} - Executing".format(
                             plugin_name=plugin.name
@@ -53,14 +56,15 @@ def main():
                                 plugin_name=plugin.name,
                                 next_event=task_until,
                                 crontab=plugin.plugin_object.get_schedule(),
-                            )
+                            ),
+                            "info",
                         )
 
             sys.stdout.flush()
             time.sleep(CRON_CHECK_INTERVAL)
 
         except (KeyboardInterrupt, SystemExit):
-            log("KeyboardInterrupt received. Exiting...")
+            log("KeyboardInterrupt received. Exiting...", "warn")
             print()
             exit()
 
@@ -80,11 +84,6 @@ def get_plugin_directories(base_dir: str):
         if "__pycache__" not in directory:
             plugin_directories.append(directory)
     return plugin_directories
-
-
-def log(message: str):
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    print("[{timestamp}] {message}".format(timestamp=timestamp, message=message))
 
 
 if __name__ == "__main__":
