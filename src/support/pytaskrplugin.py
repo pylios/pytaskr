@@ -3,7 +3,6 @@ import time, datetime, os, ntpath
 
 
 class PytaskrPlugin(IPlugin):
-    name = ""
     meta = {}
 
     def __init__(self):
@@ -13,8 +12,10 @@ class PytaskrPlugin(IPlugin):
         raise NotImplementedError
 
     def plugin_info(self):
-        # self.parse_plugin_info()
         return self.meta
+
+    def get_schedule(self):
+        return self.meta["crontab"]
 
     def parse_plugin_info(self):
         dir = os.path.dirname(os.path.realpath(__file__)) + "/../plugins"

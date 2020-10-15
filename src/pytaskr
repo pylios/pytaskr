@@ -37,7 +37,7 @@ def main():
     while True:
         try:
             for plugin in manager.getAllPlugins():
-                task_time = CronTab(plugin.plugin_object.meta["crontab"])
+                task_time = CronTab(plugin.plugin_object.get_schedule())
                 task_until = round(task_time.next(None, default_utc=True))
 
                 if task_until <= CRON_CHECK_INTERVAL:
@@ -53,7 +53,7 @@ def main():
                             "Plugin: {plugin_name} - Sleeping - Next event {next_event}s - Schedule: {crontab}".format(
                                 plugin_name=plugin.name,
                                 next_event=task_until,
-                                crontab=plugin.plugin_object.meta["crontab"],
+                                crontab=plugin.plugin_object.get_schedule(),
                             )
                         )
 
@@ -61,7 +61,8 @@ def main():
             time.sleep(CRON_CHECK_INTERVAL)
 
         except (KeyboardInterrupt, SystemExit):
-            log("Exiting...")
+            log("KeyboardInterrupt received. Exiting...")
+            print()
             exit()
 
 
